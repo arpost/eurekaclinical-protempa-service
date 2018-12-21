@@ -39,7 +39,6 @@ package edu.emory.cci.aiw.cvrg.eureka.etl.resource;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
 import org.eurekaclinical.protempa.client.comm.EtlDestination;
 import edu.emory.cci.aiw.cvrg.eureka.etl.entity.CohortDestinationEntity;
 import edu.emory.cci.aiw.cvrg.eureka.etl.entity.DestinationEntityVisitor;
@@ -51,61 +50,70 @@ import edu.emory.cci.aiw.cvrg.eureka.etl.entity.PatientSetSenderDestinationEntit
 import edu.emory.cci.aiw.cvrg.eureka.etl.entity.TabularFileDestinationEntity;
 import edu.emory.cci.aiw.cvrg.eureka.etl.config.EtlProperties;
 import edu.emory.cci.aiw.cvrg.eureka.etl.dao.EtlGroupDao;
+import edu.emory.cci.aiw.cvrg.eureka.etl.entity.RelDbDestinationEntity;
 
 /**
  *
  * @author Andrew Post
  */
 public class DestinationDTOExtractorVisitor implements ConfigDTOExtractorVisitor, DestinationEntityVisitor {
-	private final CohortDestinationsDTOExtractor cohortExtractor;
-	private final I2B2DestinationsDTOExtractor i2b2Extractor;
-	private final Neo4jDestinationsDTOExtractor neo4jExtractor;
-	private final PatientSetExtractorDestinationsDTOExtractor patientSetExtractorExtractor;
-	private final PatientSetSenderDestinationsDTOExtractor patientSetSenderExtractor;
-	private final TabularFileDestinationsDTOExtractor tabularFileExtractor;
-	private EtlDestination destDTO;
 
-	public DestinationDTOExtractorVisitor(EtlProperties inEtlProperties, AuthorizedUserEntity user, EtlGroupDao inGroupDao) {
-		this.cohortExtractor = new CohortDestinationsDTOExtractor(user, inGroupDao);
-		this.i2b2Extractor = new I2B2DestinationsDTOExtractor(inEtlProperties, user, inGroupDao);
-		this.neo4jExtractor = new Neo4jDestinationsDTOExtractor(inEtlProperties, user, inGroupDao);
-		this.patientSetExtractorExtractor = new PatientSetExtractorDestinationsDTOExtractor(user, inGroupDao);
-		this.patientSetSenderExtractor = new PatientSetSenderDestinationsDTOExtractor(user, inGroupDao);
-		this.tabularFileExtractor = new TabularFileDestinationsDTOExtractor(user, inGroupDao);
-	}
-	
-	@Override
-	public void visit(CohortDestinationEntity cohortDestination) {
-		this.destDTO = cohortExtractor.extractDTO(cohortDestination);
-	}
+    private final CohortDestinationsDTOExtractor cohortExtractor;
+    private final I2B2DestinationsDTOExtractor i2b2Extractor;
+    private final Neo4jDestinationsDTOExtractor neo4jExtractor;
+    private final PatientSetExtractorDestinationsDTOExtractor patientSetExtractorExtractor;
+    private final PatientSetSenderDestinationsDTOExtractor patientSetSenderExtractor;
+    private final TabularFileDestinationsDTOExtractor tabularFileExtractor;
+    private final RelDbDestinationsDTOExtractor relDbExtractor;
+    private EtlDestination destDTO;
 
-	@Override
-	public void visit(I2B2DestinationEntity i2b2Destination) {
-		this.destDTO = i2b2Extractor.extractDTO(i2b2Destination);
-	}
+    public DestinationDTOExtractorVisitor(EtlProperties inEtlProperties, AuthorizedUserEntity user, EtlGroupDao inGroupDao) {
+        this.cohortExtractor = new CohortDestinationsDTOExtractor(user, inGroupDao);
+        this.i2b2Extractor = new I2B2DestinationsDTOExtractor(inEtlProperties, user, inGroupDao);
+        this.neo4jExtractor = new Neo4jDestinationsDTOExtractor(inEtlProperties, user, inGroupDao);
+        this.patientSetExtractorExtractor = new PatientSetExtractorDestinationsDTOExtractor(user, inGroupDao);
+        this.patientSetSenderExtractor = new PatientSetSenderDestinationsDTOExtractor(user, inGroupDao);
+        this.tabularFileExtractor = new TabularFileDestinationsDTOExtractor(user, inGroupDao);
+        this.relDbExtractor = new RelDbDestinationsDTOExtractor(user, inGroupDao);
+    }
 
-	@Override
-	public void visit(Neo4jDestinationEntity neo4jDestination) {
-		this.destDTO = this.neo4jExtractor.extractDTO(neo4jDestination);
-	}
-	
-	@Override
-	public void visit(PatientSetExtractorDestinationEntity patientSetExtractorDestination) {
-		this.destDTO = this.patientSetExtractorExtractor.extractDTO(patientSetExtractorDestination);
-	}
-	
-	@Override
-	public void visit(PatientSetSenderDestinationEntity patientSetSenderDestination) {
-		this.destDTO = this.patientSetSenderExtractor.extractDTO(patientSetSenderDestination);
-	}
-	
-	@Override
-	public void visit(TabularFileDestinationEntity tabularFileDestination) {
-		this.destDTO = this.tabularFileExtractor.extractDTO(tabularFileDestination);
-	}
-	
-	public EtlDestination getEtlDestination() {
-		return this.destDTO;
-	}
+    @Override
+    public void visit(CohortDestinationEntity cohortDestination) {
+        this.destDTO = cohortExtractor.extractDTO(cohortDestination);
+    }
+
+    @Override
+    public void visit(I2B2DestinationEntity i2b2Destination) {
+        this.destDTO = i2b2Extractor.extractDTO(i2b2Destination);
+    }
+
+    @Override
+    public void visit(Neo4jDestinationEntity neo4jDestination) {
+        this.destDTO = this.neo4jExtractor.extractDTO(neo4jDestination);
+    }
+
+    @Override
+    public void visit(PatientSetExtractorDestinationEntity patientSetExtractorDestination) {
+        this.destDTO = this.patientSetExtractorExtractor.extractDTO(patientSetExtractorDestination);
+    }
+
+    @Override
+    public void visit(PatientSetSenderDestinationEntity patientSetSenderDestination) {
+        this.destDTO = this.patientSetSenderExtractor.extractDTO(patientSetSenderDestination);
+    }
+
+    @Override
+    public void visit(TabularFileDestinationEntity tabularFileDestination) {
+        this.destDTO = this.tabularFileExtractor.extractDTO(tabularFileDestination);
+    }
+    
+    @Override
+    public void visit(RelDbDestinationEntity relDbDestination) {
+        this.destDTO = this.relDbExtractor.extractDTO(relDbDestination);
+    }
+
+    public EtlDestination getEtlDestination() {
+        return this.destDTO;
+    }
 
 }

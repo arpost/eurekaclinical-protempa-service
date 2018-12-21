@@ -39,21 +39,23 @@ package edu.emory.cci.aiw.cvrg.eureka.etl.entity;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
 /**
  *
  * @author Andrew Post
  */
 public interface DestinationEntityVisitor {
-	void visit(CohortDestinationEntity cohortDestination);
-	
-	void visit(I2B2DestinationEntity i2b2Destination);
-	
-	void visit(Neo4jDestinationEntity neo4jDestination);
-	
-	void visit(PatientSetExtractorDestinationEntity patientSetExtractorDestination);
-	
-	void visit(PatientSetSenderDestinationEntity patientSetSenderDestination);
-	
-	void visit(TabularFileDestinationEntity tabularFileDestinationEntity);
+
+    void visit(CohortDestinationEntity cohortDestination);
+
+    void visit(I2B2DestinationEntity i2b2Destination);
+
+    void visit(Neo4jDestinationEntity neo4jDestination);
+
+    void visit(PatientSetExtractorDestinationEntity patientSetExtractorDestination);
+
+    void visit(PatientSetSenderDestinationEntity patientSetSenderDestination);
+
+    void visit(TabularFileDestinationEntity tabularFileDestinationEntity);
+    
+    void visit(RelDbDestinationEntity reldbDestinationEntity);
 }
